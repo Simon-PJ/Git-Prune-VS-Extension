@@ -2,7 +2,7 @@
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
         <Identity Id="GitPrune.458be3b0-116e-4f0c-a59e-28f56f3149d5" Version="1.0" Language="en-US" Publisher="Simon Jones" />
-        <DisplayName>GitPrune</DisplayName>
+        <DisplayName>Git Prune Button</DisplayName>
         <Description xml:space="preserve">Adds a button to the solution explorer to prune remote git repo</Description>
     </Metadata>
     <Installation>

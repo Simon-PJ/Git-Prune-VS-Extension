@@ -2,6 +2,7 @@
 using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.Windows;
 using EnvDTE;
 using Microsoft.VisualStudio.Shell;
@@ -87,11 +88,16 @@ namespace GitPrune
 
             if (string.IsNullOrEmpty(dte.Solution.FullName)) return;
 
-            var directory = System.IO.Path.GetDirectoryName(dte.Solution.FullName);
+            var solutionDirectory = Path.GetDirectoryName(dte.Solution.FullName);
+            var gitDirectory = FindGitRepoDirectory(solutionDirectory);
 
-            if (!System.IO.Directory.Exists($"{directory}/.git")) return;
+            if (gitDirectory == null)
+            {
+                MessageBox.Show("No git repo found");
+                return;
+            }
 
-            var displayString = RunPruneCommand(directory);
+            var displayString = RunPruneCommand(gitDirectory);
 
             MessageBox.Show(displayString);
         }
@@ -119,6 +125,23 @@ namespace GitPrune
             var displayString = string.IsNullOrEmpty(output) ? "Nothing to prune" : output;
 
             return displayString;
+        }
+
+        private string FindGitRepoDirectory(string directory)
+        {
+            if (Directory.Exists($"{directory}/.git"))
+            {
+                return directory;
+            }
+
+            var parentDirectory = Directory.GetParent(directory);
+
+            if (parentDirectory != null)
+            {
+                return FindGitRepoDirectory(parentDirectory.FullName);
+            }
+
+            return null;
         }
     }
 }
